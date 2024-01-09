@@ -1,0 +1,29 @@
+name: DB赖Token刷新
+
+on:
+  schedule:
+    # 此处是UTC时间，对应北京时间早八点
+    - cron : '00 23 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Update Token
+      run: |
+        echo "curl --request POST \
+          --url ${DBL_YUNKONG_API} \
+          --header 'Content-Type: multipart/form-data' \
+          --header 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36' \
+          --form username=${DBL_YUNKONG_USERNAME} \
+          --form pwd=${DBL_YUNKONG_PASSWORD}"
+      env:
+        DBL_YUNKONG_API: ${{ vars.DBL_YUNKONG_API }}
+        DBL_YUNKONG_USERNAME: ${{ secrets.DBL_YUNKONG_USERNAME }}
+        DBL_YUNKONG_PASSWORD: ${{ secrets.DBL_YUNKONG_PASSWORD }}
