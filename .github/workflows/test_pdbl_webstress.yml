@@ -18,16 +18,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install Siege
+      run: |
+        sudo echo "deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy main restricted universe multiverse" > /etc/apt/source.list && \
+        sudo apt update && \
+        sudo apt install -y siege && \
+        which siege && \
+        siege --version
     - name: Stress Test
       run: |
-        wget https://download.joedog.org/siege/siege-4.1.6.tar.gz && \
-        tar -zxvf siege-4.1.6.tar.gz && \
-        cd siege-4.1.6 && \
-        ls -al && \
         echo $DBL_IMAGES_URL > images.txt && \
-        ls -al ../ && \
-        pwd && \
-        cat images.txt && \
-        ./siege 
+        cat images.txt
       env:
         DBL_IMAGES_URL: ${{ vars.DBL_IMAGES_URL }}
