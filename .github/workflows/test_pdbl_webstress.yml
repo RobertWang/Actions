@@ -20,8 +20,8 @@ jobs:
     steps:
     - name: Update Token
       run: |
-        apt update -y \
-        apt install -y siege \
+        apt-get update -y \
+        apt-get install -y siege \
         echo $DBL_IMAGES_URL > images.txt \
         pwd \
         cat images.txt \
