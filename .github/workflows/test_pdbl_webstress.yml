@@ -21,8 +21,8 @@ jobs:
     - name: Stress Test
       run: |
         wget https://download.joedog.org/siege/siege-4.1.6.tar.gz && \
-        tar -zxvf siege-4.1.6.tar.gz -C siege && \
-        cd siege && \
+        tar -zxvf siege-4.1.6.tar.gz && \
+        cd siege-4.1.6 && \
         ls -al && \
         echo $DBL_IMAGES_URL > images.txt && \
         ls -al ../ && \
