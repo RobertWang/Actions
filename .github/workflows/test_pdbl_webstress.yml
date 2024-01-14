@@ -18,16 +18,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install Siege
-      run: |
-        sudo echo "deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy main restricted universe multiverse" > /etc/apt/source.list && \
-        sudo apt update && \
-        sudo apt install -y siege && \
-        which siege && \
-        siege --version
+    # - name: Install Siege
+    #   run: |
+    #     sudo echo "deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy main restricted universe multiverse" > /etc/apt/source.list && \
+    #     sudo apt update && \
+    #     sudo apt install -y siege && \
+    #     which siege && \
+    #     siege --version
     - name: Stress Test
       run: |
-        echo $DBL_IMAGES_URL > images.txt && \
-        cat images.txt
+        wget -q https://github.com/link1st/go-stress-testing/releases/download/v1.0.8/go-stress-testing-linux -O gostress && \
+        chmod +x gostress && \
+        pwd && \
+        echo $DBL_IMAGES_URL && \
+        ./gostress
       env:
         DBL_IMAGES_URL: ${{ vars.DBL_IMAGES_URL }}
