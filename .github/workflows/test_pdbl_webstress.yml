@@ -20,7 +20,7 @@ jobs:
     steps:
     - name: Install Siege
       run: |
-        sudo apt update -y \
+        sudo apt update \
         sudo apt install -y siege \
         which siege \
         siege
