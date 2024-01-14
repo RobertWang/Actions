@@ -18,14 +18,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Update Token
+    - name: Install Siege
       run: |
-        apt-get update -y \
-        apt-get install -y siege \
-        echo $DBL_IMAGES_URL > images.txt \
-        pwd \
-        cat images.txt \
+        sudo apt update -y \
+        sudo apt install -y siege \
         which siege \
         siege
+    - name: Stress Test
+      run: |
+        echo $DBL_IMAGES_URL > images.txt \
+        pwd \
+        cat images.txt
       env:
         DBL_IMAGES_URL: ${{ vars.DBL_IMAGES_URL }}
