@@ -18,11 +18,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install Siege
-      run: |
-        sudo apt install -y siege \
-        which siege \
-        siege
     - name: Stress Test
       run: |
         echo $DBL_IMAGES_URL > images.txt \
