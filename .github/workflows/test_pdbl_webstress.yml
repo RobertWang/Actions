@@ -20,12 +20,13 @@ jobs:
     steps:
     - name: Stress Test
       run: |
-        wget http://download.joedog.org/siege/siege-latest.tar.gz \
-        tar -xvf siege-latest.tar.gz -C siege \
-        cd siege \
-        echo $DBL_IMAGES_URL > images.txt \
-        pwd \
-        cat images.txt \
+        wget https://download.joedog.org/siege/siege-4.1.6.tar.gz && \
+        tar -xvf siege-4.1.6.tar.gz -C siege && \
+        cd siege && \
+        echo $DBL_IMAGES_URL > images.txt && \
+        ls -al ../ && \
+        pwd && \
+        cat images.txt && \
         ./siege 
       env:
         DBL_IMAGES_URL: ${{ vars.DBL_IMAGES_URL }}
