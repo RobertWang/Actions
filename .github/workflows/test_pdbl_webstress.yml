@@ -1,0 +1,31 @@
+name: TEST_PDBL_WEBSTRESS
+
+on:
+  repository_dispatch:
+    types:
+      - pdbl_webstreet
+  schedule:
+    # 此处是UTC时间，对应北京时间早八点
+    - cron : '00 23 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Update Token
+      run: |
+        apt update -y \
+        apt install -y siege \
+        echo $DBL_IMAGES_URL > images.txt \
+        pwd \
+        cat images.txt \
+        which siege \
+        siege
+      env:
+        DBL_IMAGES_URL: ${{ vars.DBL_IMAGES_URL }}
