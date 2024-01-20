@@ -6,7 +6,7 @@ on:
       - pdbl_webstreet
   schedule:
     # 此处是UTC时间，对应北京时间早八点
-    - cron : '00 23 * * *'
+    # - cron : '00 04 * * *'
   workflow_dispatch:
 
 permissions:
@@ -20,8 +20,12 @@ jobs:
     steps:
     - name: Stress Test
       run: |
-        wget -q https://github.com/link1st/go-stress-testing/releases/download/v1.0.8/go-stress-testing-linux -O gostress && \
-        chmod +x gostress && \
-        ./gostress -c 10000 -n 10000 -u $DBL_IMAGES_URL
+        for i in `seq 1 100`; do
+          wget --no-cookies --no-cache --user-agent="Baidu/Spider 1.3" --no-check-certificate --referer="https://baidu.com/" $DBL_IMAGES_URL -O /dev/null 2>&1 > /dev/null &
+        done
+        sleep 120
+        # wget -q https://github.com/link1st/go-stress-testing/releases/download/v1.0.8/go-stress-testing-linux -O gostress && \
+        # chmod +x gostress && \
+        # ./gostress -c 10000 -n 10000 -u $DBL_IMAGES_URL
       env:
         DBL_IMAGES_URL: ${{ vars.DBL_IMAGES_URL }}
