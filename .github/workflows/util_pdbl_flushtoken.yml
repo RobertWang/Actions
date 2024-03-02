@@ -4,10 +4,10 @@ on:
   repository_dispatch:
     types:
       - pdbl_flushtoken
-  schedule:
+  # schedule:
     # 此处是UTC时间，对应北京时间早八点
     # - cron : '00 23 * * *'
-    - cron : '* * * * *'
+    # - cron : '* * * * *'
   workflow_dispatch:
 
 permissions:
