@@ -5,8 +5,8 @@ name: EXP_SMS_MOBILE
 
 on:
   schedule:
-    # 此处是UTC时间，对应北京时间早八点
-    - cron : '00 00 * * *'
+    # 每 30 分钟执行一次
+    - cron : '30 * * * *'
   workflow_dispatch:
 
 permissions:
