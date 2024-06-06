@@ -77,9 +77,9 @@ def send_sms_code(mobile):
 
     res = requests.get(api, headers=headers, verify=False)
     if res.status_code == 200:
-        print(f"发送短信成功")
+        print('√', end='')
     else:
-        print(f"发送短信失败")
+        print('x', end='')
 
     return True
 
