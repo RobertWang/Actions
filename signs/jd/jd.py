@@ -1,3 +1,7 @@
+'''
+[GitHub Action 自动签到领京豆，薅京东羊毛一个月，完全免费](https://guozh.net/github-action-jd-sign/)
+[[奶奶看了都会]京东自动签到薅羊毛-完整教程](https://segmentfault.com/a/1190000041786477)
+'''
 import os
 import requests
 
@@ -9,15 +13,16 @@ url = ("https://api.m.jd.com/client.action?functionId=signBeanAct&body=%7B%22fp%
        ".8.1&uuid=3acd1f6361f86fc0a1bc23971b2e7bbe6197afb6&openudid=3acd1f6361f86fc0a1bc23971b2e7bbe6197afb6&jsonp"
        "=jsonp_1645885800574_58482")
 
-headers = {"Connection": 'keep-alive',
-           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-           "Cache-Control": 'no-cache',
-           "User-Agent": "okhttp/3.12.1;jdmall;android;version/10.3.4;build/92451;",
-           "accept": "*/*",
-           "connection": "Keep-Alive",
-           "Accept-Encoding": "gzip,deflate",
-           "Cookie": cookie
-           }
+headers = {
+       "Connection": 'keep-alive',
+       "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+       "Cache-Control": 'no-cache',
+       "User-Agent": "okhttp/3.12.1;jdmall;android;version/10.3.4;build/92451;",
+       "accept": "*/*",
+       "connection": "Keep-Alive",
+       "Accept-Encoding": "gzip,deflate",
+       "Cookie": cookie,
+}
 
 response = requests.post(url=url, headers=headers)
 print(response.text)
