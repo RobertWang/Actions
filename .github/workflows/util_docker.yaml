@@ -31,7 +31,10 @@ jobs:
     - name: Build and push image Aliyun
       run: |
         docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
-        while IFS= read -r line; do
+        pwd
+        cat ./utils/dockers/images.txt
+        for line in $(cat ./utils/dockers/images.txt); do
+        # for IFS= read -r line; do
           [[ -z "$line" ]] && continue
           echo "docker pull $line"
           docker pull $line
@@ -53,4 +56,4 @@ jobs:
           docker tag $image $new_image
           echo "docker push $new_image"
           docker push $new_image
-        done < Actions/utils/dockers/images.txt
+        done
