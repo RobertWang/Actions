@@ -32,7 +32,9 @@ jobs:
       run: |
         docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
         pwd
+        ls -al
         cat ./utils/dockers/images.txt
+        echo '-------------------- Start --------------------'
         for line in $(cat ./utils/dockers/images.txt); do
         # for IFS= read -r line; do
           [[ -z "$line" ]] && continue
