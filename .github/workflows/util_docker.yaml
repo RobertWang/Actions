@@ -31,31 +31,36 @@ jobs:
     - name: Build and push image Aliyun
       run: |
         docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
+        dockers_file="./utils/dockers/images.txt"
         pwd
-        ls -al
-        cat ./utils/dockers/images.txt
+        ls -al $dockers_file
+        cat $dockers_file
         echo '-------------------- Start --------------------'
-        for line in $(cat ./utils/dockers/images.txt); do
-        # for IFS= read -r line; do
-          [[ -z "$line" ]] && continue
-          echo "docker pull $line"
-          docker pull $line
-          platform=$(echo "$line" | awk -F'--platform[ =]' '{if (NF>1) print $2}' | awk '{print $1}')
-          echo "platform is $platform"
-          # 如果存在架构信息 将架构信息拼到镜像名称前面
-          if [ -z "$platform" ]; then
-              platform_prefix=""
-          else
-              platform_prefix="${platform//\//_}_"
-          fi
-          echo "platform_prefix is $platform_prefix"
-          # 获取镜像的完整名称，例如kasmweb/nginx:1.25.3（命名空间/镜像名:版本号）
-          image=$(echo "$line" | awk '{print $NF}')
-          # 获取 镜像名:版本号  例如nginx:1.25.3
-          image_name_tag=$(echo "$image" | awk -F'/' '{print $NF}')
-          new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$platform_prefix$image_name_tag"
-          echo "docker tag $image $new_image"
-          docker tag $image $new_image
-          echo "docker push $new_image"
-          docker push $new_image
-        done
+        # images.txt 文件最后一行，需要保持为空行
+        while IFS= read -r line; do
+            # 过滤需要忽略的行
+            [[ -z "$line" ]] && continue
+            [[ $line =~ ^[[:space:]]*#.* ]] && continue
+            echo "1. 获取镜像 docker pull $line"
+            docker pull $line
+            echo "2. 解析 platform 和 platform_prefix"
+            platform=$(echo "$line" | awk -F'--platform[ =]' '{if (NF>1) print $2}' | awk '{print $1}')
+            echo "  - platform is $platform"
+            # 如果存在架构信息 将架构信息拼到镜像名称前面
+            if [ -z "$platform" ]; then
+                platform_prefix=""
+            else
+                platform_prefix="${platform//\//_}_"
+            fi
+            echo "  - platform_prefix is ${platform_prefix}"
+            # 获取镜像的完整名称，例如kasmweb/nginx:1.25.3（命名空间/镜像名:版本号）
+            image=$(echo "$line" | awk '{print $NF}')
+            # 获取 镜像名:版本号  例如nginx:1.25.3
+            image_name_tag=$(echo "$image" | awk -F'/' '{print $NF}')
+            new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$platform_prefix$image_name_tag"
+            echo "3. 镜像改名 docker tag $image $new_image"
+            docker tag $image $new_image
+            echo "4. 镜像推送 docker push $new_image"
+            docker push $new_image
+            echo "----------------------------------------"
+        done < "$dockers_file"
