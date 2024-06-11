@@ -1,8 +1,15 @@
 name: 工具_Docker镜像同步构建推送
-# alias UTIL_Docker
+# 基本说明
 # 用于向阿里云私有 docker images 仓库推送镜像使用
 # 原始资料 : [Docker镜像停服? 我编写了一个镜像转存工具，解决国内无法拉取docker镜像的问题](https://www.bilibili.com/read/cv35249690/) by 技术爬爬虾
 # 原始仓库 : [docker_image_pusher](https://github.com/tech-shrimp/docker_image_pusher)
+
+# 需要配置 Secret
+# 配置参考来源 : [容器镜像服务](https://cr.console.aliyun.com/)
+# ALIYUN_NAME_SPACE : 命名空间
+# ALIYUN_REGISTRY : 仓库管理 > 访问凭证 > 登录实例中最后一段 类似 `registry.cn-hangzhou.aliyuncs.com`
+# ALIYUN_REGISTRY_USER : 阿里云帐号
+# ALIYUN_REGISTRY_PASSWORD : 仓库管理 > 访问凭证 > 固定密码
 
 on:
   # 手工触发执行
@@ -32,9 +39,9 @@ jobs:
       run: |
         docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
         dockers_file="./utils/dockers/images.txt"
-        pwd
-        ls -al $dockers_file
-        cat $dockers_file
+        # pwd
+        # ls -al $dockers_file
+        # cat $dockers_file
         echo '-------------------- Start --------------------'
         # images.txt 文件最后一行，需要保持为空行
         while IFS= read -r line; do
