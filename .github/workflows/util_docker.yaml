@@ -1,5 +1,5 @@
-name: Docker
-
+name: 工具_Docker镜像同步构建推送
+# alias UTIL_Docker
 # 用于向阿里云私有 docker images 仓库推送镜像使用
 # 原始资料 : [Docker镜像停服? 我编写了一个镜像转存工具，解决国内无法拉取docker镜像的问题](https://www.bilibili.com/read/cv35249690/) by 技术爬爬虾
 # 原始仓库 : [docker_image_pusher](https://github.com/tech-shrimp/docker_image_pusher)
