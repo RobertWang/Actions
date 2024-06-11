@@ -1,0 +1,56 @@
+name: Docker
+
+# 用于向阿里云私有 docker images 仓库推送镜像使用
+# 原始资料 : [Docker镜像停服? 我编写了一个镜像转存工具，解决国内无法拉取docker镜像的问题](https://www.bilibili.com/read/cv35249690/) by 技术爬爬虾
+# 原始仓库 : [docker_image_pusher](https://github.com/tech-shrimp/docker_image_pusher)
+
+on:
+  # 手工触发执行
+  workflow_dispatch:
+  # push:
+  #  branches: [ main ]
+
+env:
+  ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY }}"
+  ALIYUN_NAME_SPACE: "${{ secrets.ALIYUN_NAME_SPACE }}"
+  ALIYUN_REGISTRY_USER: "${{ secrets.ALIYUN_REGISTRY_USER }}"
+  ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
+
+jobs:
+
+  build:
+    name: Pull
+    runs-on: ubuntu-latest
+    steps:
+    - name: Docker Setup Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Build and push image Aliyun
+      run: |
+        docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
+        while IFS= read -r line; do
+          [[ -z "$line" ]] && continue
+          echo "docker pull $line"
+          docker pull $line
+          platform=$(echo "$line" | awk -F'--platform[ =]' '{if (NF>1) print $2}' | awk '{print $1}')
+          echo "platform is $platform"
+          # 如果存在架构信息 将架构信息拼到镜像名称前面
+          if [ -z "$platform" ]; then
+              platform_prefix=""
+          else
+              platform_prefix="${platform//\//_}_"
+          fi
+          echo "platform_prefix is $platform_prefix"
+          # 获取镜像的完整名称，例如kasmweb/nginx:1.25.3（命名空间/镜像名:版本号）
+          image=$(echo "$line" | awk '{print $NF}')
+          # 获取 镜像名:版本号  例如nginx:1.25.3
+          image_name_tag=$(echo "$image" | awk -F'/' '{print $NF}')
+          new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$platform_prefix$image_name_tag"
+          echo "docker tag $image $new_image"
+          docker tag $image $new_image
+          echo "docker push $new_image"
+          docker push $new_image
+        done < Actions/utils/dockers/images.txt
