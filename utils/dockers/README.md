@@ -2,8 +2,8 @@
 
 使用 Github Action 将 DockerHub 镜像转存到阿里云私有仓库，供国内服务器使用，免费易用
 
-视频教程 : [Docker镜像停服? 我编写了一个镜像转存工具，解决国内无法拉取docker镜像的问题](https://www.bilibili.com/video/BV1Zn4y19743/)
-文字教程 : [Docker镜像停服? 我编写了一个镜像转存工具，解决国内无法拉取docker镜像的问题](https://www.bilibili.com/read/cv35249690/)
+- 视频教程 : [Docker镜像停服? 我编写了一个镜像转存工具，解决国内无法拉取docker镜像的问题](https://www.bilibili.com/video/BV1Zn4y19743/)
+- 文字教程 : [Docker镜像停服? 我编写了一个镜像转存工具，解决国内无法拉取docker镜像的问题](https://www.bilibili.com/read/cv35249690/)
 
 作者：**技术爬爬虾**
 
